@@ -1,0 +1,15 @@
+# Dependencies
+node_modules
+
+# Build
+dist
+*.local
+
+# Env (API 키 등 수동 입력)
+.env
+.env.local
+.env.*.local
+
+# IDE / OS
+.DS_Store
+*.log
