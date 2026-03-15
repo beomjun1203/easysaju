@@ -1,15 +1,13 @@
 import { useRef, useState } from 'react'
 import { useApp } from '@/context/AppContext'
 import type { SajuMeta } from '@/types/saju'
-import type { CalendarType, BirthMinute } from '@/types/saju'
+import type { CalendarType } from '@/types/saju'
 
 const CALENDAR_OPTIONS: { value: CalendarType; label: string }[] = [
   { value: 'solar', label: '양력' },
   { value: 'lunar', label: '음력' },
   { value: 'leap', label: '윤달' },
 ]
-
-const MINUTE_OPTIONS: BirthMinute[] = ['00', '30']
 
 const YEAR_MIN = 1900
 const YEAR_MAX = 2100
@@ -58,6 +56,18 @@ function validateDay(day: string): boolean {
   return n >= 1 && n <= 31
 }
 
+function formatMinute(val: string): string {
+  const n = val.replace(/\D/g, '').slice(0, 2)
+  if (n === '') return ''
+  const num = Math.min(59, Math.max(0, Number(n) ?? 0))
+  return String(num)
+}
+
+function validateMinute(minute: string): boolean {
+  const n = Number(minute)
+  return !Number.isNaN(n) && n >= 0 && n <= 59
+}
+
 const STEP_NAMES = ['이름', '성별', '달력', '년월일', '시간'] as const
 
 export function InputView() {
@@ -66,7 +76,7 @@ export function InputView() {
   const [step, setStep] = useState(0)
   const [showTimeChoice, setShowTimeChoice] = useState(false)
   const [wantsToEnterTime, setWantsToEnterTime] = useState<boolean | null>(null)
-  const [errors, setErrors] = useState<{ year?: string; month?: string; day?: string }>({})
+  const [errors, setErrors] = useState<{ year?: string; month?: string; day?: string; minute?: string }>({})
 
   const handleLoadFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -129,6 +139,12 @@ export function InputView() {
   }
 
   const handleAnalyzeWithTime = () => {
+    const min = form?.birthMinute ?? '0'
+    if (!validateMinute(min)) {
+      setErrors((e) => ({ ...e, minute: '분은 0~59 사이로 입력해 주세요.' }))
+      return
+    }
+    setErrors((e) => ({ ...e, minute: undefined }))
     startAnalysis()
   }
 
@@ -216,7 +232,7 @@ export function InputView() {
                       : 'border-border bg-transparent text-text-dim'
                   }`}
                 >
-                  남성 ♂
+                  남성
                 </button>
                 <button
                   type="button"
@@ -227,7 +243,7 @@ export function InputView() {
                       : 'border-border bg-transparent text-text-dim'
                   }`}
                 >
-                  여성 ♀
+                  여성
                 </button>
               </div>
             </div>
@@ -328,14 +344,14 @@ export function InputView() {
                       onClick={() => setWantsToEnterTime(true)}
                       className="flex-1 rounded-lg border border-point-alt bg-point-alt/10 py-2.5 text-sm font-medium text-point-alt transition hover:bg-point-alt/20"
                     >
-                      예, 시간 입력
+                      예 (시간 입력)
                     </button>
                     <button
                       type="button"
                       onClick={handleAnalyzeWithDefaultTime}
                       className="flex-1 rounded-lg border border-border bg-surface2 py-2.5 text-sm font-medium text-text transition hover:bg-point/10"
                     >
-                      분석하기 (기본 12시)
+                      아니오 (12시)
                     </button>
                   </div>
                 </div>
@@ -362,25 +378,22 @@ export function InputView() {
                       />
                     </div>
                     <div>
-                      <label className="mb-1 block text-xs text-point-dim">분</label>
-                      <div className="flex gap-2">
-                        {MINUTE_OPTIONS.map((min) => (
-                          <button
-                            key={min}
-                            type="button"
-                            onClick={() =>
-                              setForm((f) => ({ ...f, birthMinute: min }))
-                            }
-                            className={`flex-1 rounded-[10px] border py-2.5 text-sm font-medium transition ${
-                              form.birthMinute === min
-                                ? 'border-point-alt bg-point-alt/10 text-point-alt'
-                                : 'border-border bg-transparent text-text-dim'
-                            }`}
-                          >
-                            {min}분
-                          </button>
-                        ))}
-                      </div>
+                      <label className="mb-1 block text-xs text-point-dim">분 (0~59)</label>
+                      <input
+                        type="number"
+                        min={0}
+                        max={59}
+                        value={form.birthMinute}
+                        onChange={(e) => {
+                          setForm((f) => ({ ...f, birthMinute: formatMinute(e.target.value) }))
+                          setErrors((err) => ({ ...err, minute: undefined }))
+                        }}
+                        className="w-full rounded-[10px] border border-border bg-surface px-3 py-2.5 text-sm text-text focus:border-point-alt focus:outline-none focus:ring-2 focus:ring-point-alt/20"
+                        placeholder="0"
+                      />
+                      {errors.minute && (
+                        <p className="mt-1 text-xs text-red-600">{errors.minute}</p>
+                      )}
                     </div>
                   </div>
                   <button

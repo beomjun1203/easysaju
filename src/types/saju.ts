@@ -49,9 +49,6 @@ export type ViewType = 'home' | 'input' | 'loading' | 'result'
 /** 달력 유형: 양력 / 음력 / 윤달 */
 export type CalendarType = 'solar' | 'lunar' | 'leap'
 
-/** 분 입력: 사주 시진 기준 00분 또는 30분만 허용 */
-export type BirthMinute = '00' | '30'
-
 export interface FormInput {
   name: string
   gender: 'male' | 'female'
@@ -60,7 +57,8 @@ export interface FormInput {
   birthDay: string
   /** 양력 / 음력 / 윤달 */
   calendarType: CalendarType
-  /** 시 기본 12, 수정 가능 (분은 00/30) */
+  /** 시 기본 12, 수정 가능 (0~23) */
   birthHour: string
-  birthMinute: BirthMinute
+  /** 분 (0~59) */
+  birthMinute: string
 }

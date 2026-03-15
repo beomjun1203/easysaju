@@ -9,9 +9,7 @@ export function ResultView() {
   const displayName = meta.name ? `${meta.name}님` : '사용자님'
 
   const handleExport = () => {
-    const { name, ...rest } = meta
-    const anonymized = { ...rest }
-    const blob = new Blob([JSON.stringify(anonymized, null, 2)], {
+    const blob = new Blob([JSON.stringify(meta, null, 2)], {
       type: 'application/json',
     })
     const url = URL.createObjectURL(blob)

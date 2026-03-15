@@ -57,7 +57,8 @@ export function useAppStore() {
       const isLeapMonth = calendarType === 'leap'
       const h = parseInt(birthHour, 10)
       const hour = !Number.isNaN(h) && h >= 0 && h <= 23 ? h : 12
-      const minute = birthMinute === '30' ? 30 : 0
+      const minNum = parseInt(birthMinute, 10)
+      const minute = !Number.isNaN(minNum) && minNum >= 0 && minNum <= 59 ? minNum : 0
 
       const { saju_data, is_time_known } = extractSaju({
         year: y,
@@ -70,7 +71,7 @@ export function useAppStore() {
       })
 
       const birth_date_solar = `${String(y)}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`
-      const birth_time = `${String(hour).padStart(2, '0')}:${birthMinute}`
+      const birth_time = `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`
 
       setMeta({
         user_id: generateId(),
