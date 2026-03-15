@@ -192,11 +192,23 @@ export function InputView() {
           onChange={handleLoadFile}
         />
 
-        <p className="mb-6 text-center text-base text-point-alt">
-          간단한 정보를 입력해주세요
-        </p>
-
         <div className="space-y-4">
+          {/* 말풍선: Step 0일 때만 */}
+          {step === 0 && (
+            <div className="mb-4 flex items-center gap-4 rounded-2xl bg-white py-4">
+              <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-2xl bg-white">
+                <img
+                  src="/hero.png"
+                  alt=""
+                  className="h-full w-full object-cover"
+                  onError={(e) => (e.currentTarget.style.display = 'none')}
+                />
+              </div>
+              <div className="min-w-0 flex-1 rounded-2xl rounded-bl-md bg-surface2 py-3 pl-4 pr-4 shadow-sm">
+                <p className="text-base font-medium text-text">이름을 알려주세요</p>
+              </div>
+            </div>
+          )}
           {/* Step 0: Name */}
           <div
             className="card-doodle rounded-[18px] border border-border bg-card p-5 transition-all duration-300"
@@ -214,14 +226,30 @@ export function InputView() {
             />
           </div>
 
-          {/* Step 1: Gender */}
+          {/* 말풍선: Step 1일 때만 + Gender */}
           {step >= 1 && (
-            <div
-              className="card-doodle animate-fade-in rounded-[18px] border border-border bg-card p-5"
-            >
-              <div className="mb-2 text-xs font-medium uppercase tracking-[0.2em] text-point-dim">
-                {STEP_NAMES[1]}
-              </div>
+            <>
+              {step === 1 && (
+                <div className="mb-4 flex items-center gap-4 rounded-2xl bg-white py-4">
+                  <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-2xl bg-white">
+                    <img
+                      src="/hero.png"
+                      alt=""
+                      className="h-full w-full object-cover"
+                      onError={(e) => (e.currentTarget.style.display = 'none')}
+                    />
+                  </div>
+                  <div className="min-w-0 flex-1 rounded-2xl rounded-bl-md bg-surface2 py-3 pl-4 pr-4 shadow-sm">
+                    <p className="text-base font-medium text-text">성별을 선택해주세요</p>
+                  </div>
+                </div>
+              )}
+              <div
+                className="card-doodle animate-fade-in rounded-[18px] border border-border bg-card p-5"
+              >
+                <div className="mb-2 text-xs font-medium uppercase tracking-[0.2em] text-point-dim">
+                  {STEP_NAMES[1]}
+                </div>
               <div className="flex gap-2">
                 <button
                   type="button"
@@ -247,14 +275,31 @@ export function InputView() {
                 </button>
               </div>
             </div>
+            </>
           )}
 
-          {/* Step 2: Calendar */}
+          {/* 말풍선: Step 2일 때만 + Calendar */}
           {step >= 2 && (
-            <div className="card-doodle animate-fade-in rounded-[18px] border border-border bg-card p-5">
-              <div className="mb-2 text-xs font-medium uppercase tracking-[0.2em] text-point-dim">
-                {STEP_NAMES[2]}
-              </div>
+            <>
+              {step === 2 && (
+                <div className="mb-4 flex items-center gap-4 rounded-2xl bg-white py-4">
+                  <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-2xl bg-white">
+                    <img
+                      src="/hero.png"
+                      alt=""
+                      className="h-full w-full object-cover"
+                      onError={(e) => (e.currentTarget.style.display = 'none')}
+                    />
+                  </div>
+                  <div className="min-w-0 flex-1 rounded-2xl rounded-bl-md bg-surface2 py-3 pl-4 pr-4 shadow-sm">
+                    <p className="text-base font-medium text-text">달력 기준을 선택해주세요</p>
+                  </div>
+                </div>
+              )}
+              <div className="card-doodle animate-fade-in rounded-[18px] border border-border bg-card p-5">
+                <div className="mb-2 text-xs font-medium uppercase tracking-[0.2em] text-point-dim">
+                  {STEP_NAMES[2]}
+                </div>
               <div className="flex gap-2">
                 {CALENDAR_OPTIONS.map((opt) => (
                   <button
@@ -274,14 +319,31 @@ export function InputView() {
                 ))}
               </div>
             </div>
+            </>
           )}
 
-          {/* Step 3: YMD */}
+          {/* 말풍선: Step 3일 때만 + YMD */}
           {step >= 3 && (
-            <div className="card-doodle animate-fade-in rounded-[18px] border border-border bg-card p-5">
-              <div className="mb-2 text-xs font-medium uppercase tracking-[0.2em] text-point-dim">
-                {STEP_NAMES[3]}
-              </div>
+            <>
+              {step === 3 && (
+                <div className="mb-4 flex items-center gap-4 rounded-2xl bg-white py-4">
+                  <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-2xl bg-white">
+                    <img
+                      src="/hero.png"
+                      alt=""
+                      className="h-full w-full object-cover"
+                      onError={(e) => (e.currentTarget.style.display = 'none')}
+                    />
+                  </div>
+                  <div className="min-w-0 flex-1 rounded-2xl rounded-bl-md bg-surface2 py-3 pl-4 pr-4 shadow-sm">
+                    <p className="text-base font-medium text-text">생년월일시를 알려주세요</p>
+                  </div>
+                </div>
+              )}
+              <div className="card-doodle animate-fade-in rounded-[18px] border border-border bg-card p-5">
+                <div className="mb-2 text-xs font-medium uppercase tracking-[0.2em] text-point-dim">
+                  {STEP_NAMES[3]}
+                </div>
               <div className="grid grid-cols-3 gap-2">
                 <div>
                   <label className="mb-1 block text-xs text-point-dim">년 (4자리)</label>
@@ -330,15 +392,32 @@ export function InputView() {
                 </div>
               </div>
             </div>
+            </>
           )}
 
-          {/* Step 4: Time choice + optional time inputs + 분석하기 */}
+          {/* 말풍선: Step 4 시간 선택일 때만 / 시간 입력일 때만 */}
           {showTimeChoice && step >= 4 && (
             <div className="animate-fade-in space-y-4">
               {wantsToEnterTime === null && (
-                <div className="card-doodle rounded-[18px] border border-border bg-card p-5">
-                  <p className="mb-3 text-sm text-text">태어난 시간을 아시나요?</p>
-                  <div className="flex gap-2">
+                <>
+                  <div className="mb-4 flex items-center gap-4 rounded-2xl bg-white py-4">
+                    <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-2xl bg-white">
+                      <img
+                        src="/hero.png"
+                        alt=""
+                        className="h-full w-full object-cover"
+                        onError={(e) => (e.currentTarget.style.display = 'none')}
+                      />
+                    </div>
+                    <div className="min-w-0 flex-1 rounded-2xl rounded-bl-md bg-surface2 py-3 pl-4 pr-4 shadow-sm">
+                      <p className="text-base font-medium text-text">태어난 시간을 알고 계신가요?</p>
+                    </div>
+                  </div>
+                  <div className="card-doodle rounded-[18px] border border-border bg-card p-5">
+                    <div className="mb-2 text-xs font-medium uppercase tracking-[0.2em] text-point-dim">
+                      시간
+                    </div>
+                    <div className="flex gap-2">
                     <button
                       type="button"
                       onClick={() => setWantsToEnterTime(true)}
@@ -355,13 +434,28 @@ export function InputView() {
                     </button>
                   </div>
                 </div>
+                </>
               )}
 
               {wantsToEnterTime === true && (
-                <div className="card-doodle animate-fade-in rounded-[18px] border border-border bg-card p-5">
-                  <div className="mb-2 text-xs font-medium uppercase tracking-[0.2em] text-point-dim">
-                    {STEP_NAMES[4]}
+                <>
+                  <div className="mb-4 flex items-center gap-4 rounded-2xl bg-white py-4">
+                    <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-2xl bg-white">
+                      <img
+                        src="/hero.png"
+                        alt=""
+                        className="h-full w-full object-cover"
+                        onError={(e) => (e.currentTarget.style.display = 'none')}
+                      />
+                    </div>
+                    <div className="min-w-0 flex-1 rounded-2xl rounded-bl-md bg-surface2 py-3 pl-4 pr-4 shadow-sm">
+                      <p className="text-base font-medium text-text">태어난 시간을 알려주세요.</p>
+                    </div>
                   </div>
+                  <div className="card-doodle animate-fade-in rounded-[18px] border border-border bg-card p-5">
+                    <div className="mb-2 text-xs font-medium uppercase tracking-[0.2em] text-point-dim">
+                      {STEP_NAMES[4]}
+                    </div>
                   <div className="grid grid-cols-2 gap-2">
                     <div>
                       <label className="mb-1 block text-xs text-point-dim">시 (0~23)</label>
@@ -404,6 +498,7 @@ export function InputView() {
                     분석하기
                   </button>
                 </div>
+                </>
               )}
             </div>
           )}

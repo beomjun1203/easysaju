@@ -65,7 +65,7 @@ export function ResultView() {
           </div>
           <div className="min-w-0 flex-1 rounded-2xl rounded-bl-md bg-surface2 py-3 pl-4 pr-4 shadow-sm">
             <p className="text-base font-medium text-text">
-              {displayName}의 사주입니다
+              {displayName}의 분석 결과입니다
             </p>
           </div>
         </div>
@@ -88,14 +88,14 @@ export function ResultView() {
             onClick={handleShare}
             className="flex-1 rounded-xl bg-point-alt py-3 text-base font-medium tracking-wide text-white transition hover:bg-point-alt-dim active:opacity-90"
           >
-            📤 공유하기
+            공유하기
           </button>
           <button
             type="button"
             onClick={handleExport}
             className="flex-1 rounded-xl bg-point-alt py-3 text-base font-medium tracking-wide text-white transition hover:bg-point-alt-dim active:opacity-90"
           >
-            💾 저장
+            저장
           </button>
         </div>
       </div>

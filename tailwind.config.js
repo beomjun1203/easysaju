@@ -24,11 +24,16 @@ export default {
       },
       animation: {
         'fade-in': 'fade-in 0.35s ease-out',
+        'loading-scale': 'loading-scale 1.8s ease-in-out infinite',
       },
       keyframes: {
         'fade-in': {
           '0%': { opacity: '0', transform: 'translateY(-6px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        'loading-scale': {
+          '0%, 100%': { transform: 'scale(0.88)' },
+          '50%': { transform: 'scale(1.05)' },
         },
       },
     },
