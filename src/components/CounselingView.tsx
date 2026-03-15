@@ -46,19 +46,18 @@ export function CounselingView() {
 
   return (
     <div className="relative flex min-h-screen flex-col overflow-hidden bg-surface text-text">
-      <div className="bg-blur-orbs absolute inset-0" />
+      <div className="bg-pastel-doodle absolute inset-0" />
 
       <div className="relative z-10 flex flex-1 flex-col">
-        {/* 상단: 뒤로가기(분석 페이지로) + 제목 */}
-        <div className="flex items-center justify-between border-b border-border bg-card/80 px-4 py-3 backdrop-blur-sm">
+        <div className="flex items-center justify-between border-b border-border bg-card px-4 py-3">
           <button
             type="button"
             onClick={goToResult}
-            className="rounded-[10px] border border-gold/30 bg-gold/10 px-4 py-2 text-sm font-medium tracking-wide text-gold transition hover:bg-gold/20"
+            className="rounded-[10px] border border-border bg-surface2 px-4 py-2 text-sm font-medium tracking-wide text-text transition hover:bg-point/10"
           >
             ← 분석 결과로
           </button>
-          <span className="text-xs font-medium uppercase tracking-wider text-gold-dim">
+          <span className="text-xs font-medium uppercase tracking-wider text-point-dim">
             AI 맞춤형 운세
           </span>
         </div>
@@ -81,7 +80,7 @@ export function CounselingView() {
                 <div
                   className={`max-w-[85%] rounded-2xl px-4 py-3 ${
                     msg.role === 'user'
-                      ? 'bg-gold/20 border border-gold/30 text-text'
+                      ? 'bg-point-alt/10 border border-point-alt/30 text-text'
                       : 'bg-card border border-border text-text'
                   }`}
                 >
@@ -93,7 +92,7 @@ export function CounselingView() {
         </div>
 
         {/* 하단 입력 */}
-        <div className="border-t border-border bg-card/80 p-4 backdrop-blur-sm">
+        <div className="border-t border-border bg-card p-4">
           <div className="mx-auto flex max-w-mobile gap-2">
             <input
               type="text"
@@ -106,13 +105,13 @@ export function CounselingView() {
                 }
               }}
               placeholder="메시지를 입력하세요..."
-              className="flex-1 rounded-xl border border-gold/30 bg-white/5 px-4 py-3 text-sm text-text placeholder:text-text-faint focus:border-gold/60 focus:outline-none focus:ring-2 focus:ring-gold/20"
+              className="flex-1 rounded-xl border border-border bg-surface px-4 py-3 text-sm text-text placeholder:text-text-faint focus:border-point-alt focus:outline-none focus:ring-2 focus:ring-point-alt/20"
             />
             <button
               type="button"
               onClick={handleSend}
               disabled={!inputText.trim()}
-              className="rounded-xl bg-gold/80 px-5 py-3 font-medium text-amber-950 transition hover:bg-gold disabled:opacity-50 disabled:cursor-not-allowed"
+              className="rounded-xl bg-point-alt px-5 py-3 font-medium text-white transition hover:bg-point-alt-dim disabled:opacity-50 disabled:cursor-not-allowed"
             >
               전송
             </button>
@@ -123,7 +122,7 @@ export function CounselingView() {
           <button
             type="button"
             onClick={handleExportWithHistory}
-            className="w-full rounded-xl border border-gold/35 py-3 text-sm font-medium tracking-wide text-gold transition hover:bg-gold/10"
+            className="w-full rounded-xl border border-border py-3 text-sm font-medium tracking-wide text-text transition hover:bg-surface2"
           >
             내 사주 및 상담 기록 저장하기
           </button>

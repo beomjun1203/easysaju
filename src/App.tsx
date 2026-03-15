@@ -1,4 +1,5 @@
 import { AppProvider, useApp } from '@/context/AppContext'
+import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { HomeView } from '@/components/HomeView'
 import { InputView } from '@/components/InputView'
 import { LoadingView } from '@/components/LoadingView'
@@ -15,9 +16,11 @@ function AppContent() {
 export default function App() {
   return (
     <AppProvider>
-      <div className="mx-auto min-h-screen max-w-mobile">
-        <AppContent />
-      </div>
+      <ErrorBoundary>
+        <div className="mx-auto min-h-screen max-w-mobile">
+          <AppContent />
+        </div>
+      </ErrorBoundary>
     </AppProvider>
   )
 }

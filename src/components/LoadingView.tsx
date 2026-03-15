@@ -20,12 +20,10 @@ export function LoadingView() {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-surface px-6 text-text">
-      <div className="mx-auto max-w-mobile text-center">
-        <div className="mb-6 h-14 w-14 animate-spin rounded-full border-2 border-gold/30 border-t-gold" />
-        <p className="text-text">
-          우주의 기운을 모아 명식을 분석 중입니다...
-        </p>
-        <p className="mt-2 text-sm text-text-dim">잠시만 기다려 주세요</p>
+      <div className="bg-pastel-doodle absolute inset-0" />
+      <div className="relative z-10 mx-auto max-w-mobile text-center">
+        <div className="mb-6 h-14 w-14 animate-spin rounded-full border-2 border-point/30 border-t-point-alt" />
+        <p className="text-base text-text">잠시만 기다려주세요</p>
       </div>
     </div>
   )

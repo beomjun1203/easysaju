@@ -35,7 +35,8 @@ export function useAppStore() {
     setView('result')
   }, [])
 
-  const setMetaFromForm = useCallback(() => {
+  const setMetaFromForm = useCallback((overrideForm?: Partial<FormInput>): boolean => {
+    const f = { ...form, ...overrideForm }
     const {
       name,
       gender,
@@ -45,47 +46,55 @@ export function useAppStore() {
       calendarType,
       birthHour,
       birthMinute,
-    } = form
+    } = f
     const y = parseInt(birthYear, 10)
     const m = parseInt(birthMonth, 10)
     const d = parseInt(birthDay, 10)
-    if (!y || !m || !d) return
+    if (!y || !m || !d || Number.isNaN(y) || Number.isNaN(m) || Number.isNaN(d)) return false
 
-    const isLunar = calendarType === 'lunar' || calendarType === 'leap'
-    const isLeapMonth = calendarType === 'leap'
-    const h = parseInt(birthHour, 10)
-    const hour = !Number.isNaN(h) && h >= 0 && h <= 23 ? h : 12
-    const minute = birthMinute === '30' ? 30 : 0
+    try {
+      const isLunar = calendarType === 'lunar' || calendarType === 'leap'
+      const isLeapMonth = calendarType === 'leap'
+      const h = parseInt(birthHour, 10)
+      const hour = !Number.isNaN(h) && h >= 0 && h <= 23 ? h : 12
+      const minute = birthMinute === '30' ? 30 : 0
 
-    const { saju_data, is_time_known } = extractSaju({
-      year: y,
-      month: m,
-      day: d,
-      isLunar,
-      isLeapMonth,
-      hour,
-      minute,
-    })
+      const { saju_data, is_time_known } = extractSaju({
+        year: y,
+        month: m,
+        day: d,
+        isLunar,
+        isLeapMonth,
+        hour,
+        minute,
+      })
 
-    const birth_date_solar = `${String(y)}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`
-    const birth_time = `${String(hour).padStart(2, '0')}:${birthMinute}`
+      const birth_date_solar = `${String(y)}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`
+      const birth_time = `${String(hour).padStart(2, '0')}:${birthMinute}`
 
-    setMeta({
-      user_id: generateId(),
-      name,
-      gender,
-      is_time_known,
-      birth_date_solar,
-      birth_time,
-      saju_data,
-      counseling_history: [],
-    })
+      setMeta({
+        user_id: generateId(),
+        name,
+        gender,
+        is_time_known,
+        birth_date_solar,
+        birth_time,
+        saju_data,
+        counseling_history: [],
+      })
+      return true
+    } catch (err) {
+      console.error('[setMetaFromForm]', err)
+      return false
+    }
   }, [form])
 
-  const startAnalysis = useCallback(() => {
-    setMetaFromForm()
-    setView('loading')
-    setLoading(true)
+  const startAnalysis = useCallback((overrides?: Partial<FormInput>) => {
+    const ok = setMetaFromForm(overrides)
+    if (ok) {
+      setView('loading')
+      setLoading(true)
+    }
   }, [setMetaFromForm])
 
   const finishLoading = useCallback(() => {

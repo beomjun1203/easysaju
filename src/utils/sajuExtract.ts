@@ -33,18 +33,69 @@ export function extractSaju(input: ExtractInput): { saju_data: SajuData; is_time
   let solarDay = input.day
 
   if (input.isLunar) {
-    const converted = lunarToSolar(input.year, input.month, input.day, input.isLeapMonth ?? false)
-    solarYear = converted.solar.year
-    solarMonth = converted.solar.month
-    solarDay = converted.solar.day
+    try {
+      const converted = lunarToSolar(input.year, input.month, input.day, input.isLeapMonth ?? false)
+      solarYear = converted.solar.year
+      solarMonth = converted.solar.month
+      solarDay = converted.solar.day
+    } catch (e) {
+      console.warn('[saju] lunarToSolar failed, using solar date', e)
+      solarYear = input.year
+      solarMonth = input.month
+      solarDay = input.day
+    }
   }
 
   const isTimeKnown = input.hour != null && input.minute != null
 
   if (isTimeKnown) {
-    const saju = calculateSaju(solarYear, solarMonth, solarDay, input.hour!, input.minute ?? 0, {
-      applyTimeCorrection: true,
-    })
+    let saju
+    try {
+      saju = calculateSaju(solarYear, solarMonth, solarDay, input.hour!, input.minute ?? 0, {
+        applyTimeCorrection: true,
+      })
+    } catch (e) {
+      console.warn('[saju] calculateSaju failed', e)
+      solarYear = input.year
+      solarMonth = input.month
+      solarDay = input.day
+    }
+    if (!saju) {
+      try {
+        const result = solarToLunar(solarYear, solarMonth, solarDay)
+        const gapja = result?.gapja
+        const yearPillar = gapja?.yearPillar ?? ''
+        const monthPillar = gapja?.monthPillar ?? ''
+        const dayPillar = gapja?.dayPillar ?? ''
+        const pillars = [yearPillar, monthPillar, dayPillar]
+        const heavenly_stems: [string, string, string, string | null] = ['', '', '', null]
+        const earthly_branches: [string, string, string, string | null] = ['', '', '', null]
+        pillars.forEach((p, i) => {
+          const [stem, branch] = splitPillar(p)
+          heavenly_stems[i] = stem
+          earthly_branches[i] = branch
+        })
+        const elements_count = countElementsFromPillars(pillars)
+        return {
+          is_time_known: false,
+          saju_data: {
+            heavenly_stems,
+            earthly_branches,
+            elements_count,
+          },
+        }
+      } catch (_e) {
+        const emptyCount = { wood: 0, fire: 0, earth: 0, metal: 0, water: 0 }
+        return {
+          is_time_known: false,
+          saju_data: {
+            heavenly_stems: ['', '', '', null],
+            earthly_branches: ['', '', '', null],
+            elements_count: emptyCount,
+          },
+        }
+      }
+    }
     const pillars: string[] = [
       saju.yearPillar ?? '',
       saju.monthPillar ?? '',
@@ -70,26 +121,39 @@ export function extractSaju(input: ExtractInput): { saju_data: SajuData; is_time
   }
 
   // 시간 모름: 년월일 6글자만
-  const result = solarToLunar(solarYear, solarMonth, solarDay)
-  const gapja = result.gapja
-  const yearPillar = gapja.yearPillar ?? ''
-  const monthPillar = gapja.monthPillar ?? ''
-  const dayPillar = gapja.dayPillar ?? ''
-  const pillars = [yearPillar, monthPillar, dayPillar]
-  const heavenly_stems: [string, string, string, string | null] = ['', '', '', null]
-  const earthly_branches: [string, string, string, string | null] = ['', '', '', null]
-  pillars.forEach((p, i) => {
-    const [stem, branch] = splitPillar(p)
-    heavenly_stems[i] = stem
-    earthly_branches[i] = branch
-  })
-  const elements_count = countElementsFromPillars(pillars)
-  return {
-    is_time_known: false,
-    saju_data: {
-      heavenly_stems,
-      earthly_branches,
-      elements_count,
-    },
+  try {
+    const result = solarToLunar(solarYear, solarMonth, solarDay)
+    const gapja = result?.gapja
+    const yearPillar = gapja?.yearPillar ?? ''
+    const monthPillar = gapja?.monthPillar ?? ''
+    const dayPillar = gapja?.dayPillar ?? ''
+    const pillars = [yearPillar, monthPillar, dayPillar]
+    const heavenly_stems: [string, string, string, string | null] = ['', '', '', null]
+    const earthly_branches: [string, string, string, string | null] = ['', '', '', null]
+    pillars.forEach((p, i) => {
+      const [stem, branch] = splitPillar(p)
+      heavenly_stems[i] = stem
+      earthly_branches[i] = branch
+    })
+    const elements_count = countElementsFromPillars(pillars)
+    return {
+      is_time_known: false,
+      saju_data: {
+        heavenly_stems,
+        earthly_branches,
+        elements_count,
+      },
+    }
+  } catch (e) {
+    console.warn('[saju] solarToLunar failed', e)
+    const emptyCount = { wood: 0, fire: 0, earth: 0, metal: 0, water: 0 }
+    return {
+      is_time_known: false,
+      saju_data: {
+        heavenly_stems: ['', '', '', null],
+        earthly_branches: ['', '', '', null],
+        elements_count: emptyCount,
+      },
+    }
   }
 }

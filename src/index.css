@@ -9,8 +9,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #f0e6c8;
-  background: #06060e;
+  color: #000000;
+  background: #ffffff;
   min-height: 100vh;
 }
 
@@ -18,38 +18,15 @@ body {
   min-height: 100vh;
 }
 
-/* 블러/보케 배경 효과 */
-.bg-blur-orbs {
+/* 파스텔 낙서 느낌의 부드러운 배경 */
+.bg-pastel-doodle {
   background:
-    radial-gradient(ellipse at 30% 20%, rgba(212, 175, 55, 0.04) 0%, transparent 55%),
-    radial-gradient(ellipse at 70% 80%, rgba(96, 165, 250, 0.03) 0%, transparent 50%),
-    #06060e;
+    radial-gradient(ellipse 80% 50% at 20% 30%, rgba(131, 139, 162, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 40% at 80% 70%, rgba(4, 99, 167, 0.06) 0%, transparent 45%),
+    #ffffff;
 }
 
-.bg-blur-orb {
-  position: absolute;
-  border-radius: 50%;
-  pointer-events: none;
-  filter: blur(60px);
-  opacity: 0.5;
-}
-
-@keyframes spin {
-  from { transform: translate(-50%,-50%) rotate(0deg); }
-  to { transform: translate(-50%,-50%) rotate(360deg); }
-}
-
-@keyframes spin-reverse {
-  from { transform: translate(-50%,-50%) rotate(0deg); }
-  to { transform: translate(-50%,-50%) rotate(-360deg); }
-}
-
-@keyframes orb-dot {
-  0% { transform: translate(-50%,-50%) rotate(0deg) translateX(88px) rotate(0deg); }
-  100% { transform: translate(-50%,-50%) rotate(360deg) translateX(88px) rotate(-360deg); }
-}
-
-@keyframes pulse-glow {
-  0%, 100% { opacity: 0.9; transform: translate(-50%,-50%) scale(1); }
-  50% { opacity: 1; transform: translate(-50%,-50%) scale(1.12); }
+/* 낙서감 카드: 부드러운 그림자 + 테두리 */
+.card-doodle {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(4, 99, 167, 0.04);
 }
